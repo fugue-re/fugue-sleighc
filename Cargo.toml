@@ -1,0 +1,10 @@
+[package]
+name = "fugue-sleighc"
+version = "0.3.0"
+edition = "2021"
+
+[dependencies]
+thiserror = "2"
+
+[build-dependencies]
+cmake = "0.1"

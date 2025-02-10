@@ -1,0 +1,4 @@
+[submodule "vendored"]
+	path = vendored
+	url = git@github.com:fugue-re/sleighc.git
+	branch = ghidra-v11.3
