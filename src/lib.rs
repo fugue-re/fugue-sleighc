@@ -7,8 +7,8 @@ use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum SleighCompilerError {
-    #[error("compilation failed: {0}")]
-    Compile(ExitStatus),
+    #[error("compilation failed: {0}; {1}")]
+    Compile(ExitStatus, String),
     #[error("cannot execute sleighc binary: {0}")]
     Compiler(io::Error),
     #[error("cannot find sleighc binary at `{}`", _0.display())]
@@ -55,7 +55,7 @@ impl SleighCompiler {
     ) -> Result<(Command, Option<PathBuf>), SleighCompilerError> {
         let mut cmd = Command::new(&self.binary);
 
-        cmd.stderr(Stdio::null());
+        cmd.stderr(Stdio::piped());
         cmd.stdout(Stdio::null());
 
         if self.xml_mode {
@@ -93,7 +93,8 @@ impl SleighCompiler {
 
         cmd.arg(output);
 
-        let status = cmd.status().map_err(SleighCompilerError::Compiler)?;
+        let outcome = cmd.output().map_err(SleighCompilerError::Compiler)?;
+        let status = outcome.status;
 
         if status.success() {
             Ok((!self.recursive).then(|| {
@@ -107,19 +108,22 @@ impl SleighCompiler {
                 }
             }))
         } else {
-            Err(SleighCompilerError::Compile(status))
+            let err = String::from_utf8(outcome.stderr).expect("utf8 output");
+            Err(SleighCompilerError::Compile(status, err))
         }
     }
 
     pub fn build(&self, input: impl AsRef<Path>) -> Result<Option<PathBuf>, SleighCompilerError> {
         let (mut cmd, ninput) = self.command(input)?;
 
-        let status = cmd.status().map_err(SleighCompilerError::Compiler)?;
+        let outcome = cmd.output().map_err(SleighCompilerError::Compiler)?;
+        let status = outcome.status;
 
         if status.success() {
             Ok(ninput.map(|p| p.with_extension("sla")))
         } else {
-            Err(SleighCompilerError::Compile(status))
+            let err = String::from_utf8(outcome.stderr).expect("utf8 output");
+            Err(SleighCompilerError::Compile(status, err))
         }
     }
 }
