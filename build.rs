@@ -1,4 +1,6 @@
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    cmake::build("vendored");
-    Ok(())
+fn main() {
+    cmake::Config::new("vendored")
+        .define("BUILD_COMPILER", "ON")
+        .define("BUILD_DECOMPILER", "OFF")
+        .build();
 }
