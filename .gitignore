@@ -1,1 +1,7 @@
 /target
+/result
+/result-*
+/.update-ghidra-report.txt
+/scripts/.venv/
+/scripts/*.egg-info/
+__pycache__/

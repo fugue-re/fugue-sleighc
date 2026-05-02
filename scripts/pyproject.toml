@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fugue-sleighc-update"
+version = "0.1.0"
+description = "End-to-end automation for adding Ghidra/sleighc release support"
+requires-python = ">=3.10"
+dependencies = [
+    "claude-agent-sdk>=0.1.0",
+]
+
+[project.scripts]
+fugue-sleighc-update = "fugue_sleighc_update.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["fugue_sleighc_update*"]
