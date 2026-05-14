@@ -37,7 +37,7 @@ Rules:
   - Default new .cc files to DECOMPILER_SOURCES only. Add to SLEIGH_SOURCES
     only when a build error proves it is required by the compiler target.
   - For new .y or .l files, add BISON_TARGET / FLEX_TARGET entries
-    matching the existing pattern (output to ${CMAKE_CURRENT_BINARY_DIR}/generated)
+    matching the existing pattern (output to ${{CMAKE_CURRENT_BINARY_DIR}}/generated)
     and wire them into the appropriate add_executable / add_library call.
   - For files that disappeared upstream, remove their entries.
   - Do not commit, push, or run git operations beyond `git status` / `git diff`.
