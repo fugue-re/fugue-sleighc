@@ -1,6 +1,6 @@
 [package]
 name = "fugue-sleighc"
-version = "0.3.4+12.1"
+version = "0.3.5+12.1.2"
 authors = ["Sam L. Thomas <st@xv.ax>"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
